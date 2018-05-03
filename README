@@ -1,0 +1,83 @@
+
+#Pre-requisites
+```
+Disable swap space
+Time sync across nodes
+Unique Host Name, device, Mac
+
+```
+
+#Setup
+
+##Kubernetes Master Setup
+
+### Installation
+```
+apt-get update
+apt-get install -y docker.io
+
+apt-get update && apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+apt-get update
+apt-get install -y kubelet kubeadm kubectl
+```
+
+### Execution Steps
+
+```
+swapoff -a
+kubeadm init
+sysctl net.bridge.bridge-nf-call-iptables=1
+export kubever=$(kubectl version | base64 | tr -d '\n')
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+kubectl get nodes
+
+## Kubernetes Worker Node Setup
+Trigger join command received in output of "kubeadm init" at Master Node
+```
+kubeadm join 192.168.63.140:6443 --token i8zlhn.numq4mvod3ks65l4 --discovery-token-ca-cert-hash sha256:b119d76b1ce642cb2442375c36f8c9360425af0d3375dd3b440c369bd82b3548
+
+```
+
+### Deployment
+
+Master Node:
+# kubectl get nodes
+NAME      STATUS    ROLES     AGE       VERSION
+yogi      Ready     <none>    5h        v1.10.1
+yug       Ready     master    5h        v1.10.1
+
+
+When both nodes are ready. Create deployement.
+
+```
+copy Config folder contents into "/home/yogi/sdp-data/"
+
+sudo chown -R 107:112 /home/yogi/sdp-data/scm-files/*
+sudo chown -R 107:112 /home/yogi/sdp-data/scm-storage
+sudo chmod -R 777  /home/yogi/sdp-data/core-mysql-ubuntu/
+sudo chmod -R 777  /home/yogi/sdp-data/docker-volumes/core-mysql-ubuntu/
+sudo chmod -R 777  /home/yogi/sdp-data/docker-volumes/core-pki-ubuntu/
+
+root@yug:/home/yogi/Deployments# kubectl create -f kubecore.yaml
+root@yug:/home/yogi/Deployments# kubectl create -f kubescm.yaml
+
+root@yug:/home/yogi/Deployments# kubectl get svc,pods,deployments
+NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                                    AGE
+service/core         NodePort    10.97.212.21   <none>        53:31001/TCP,53:31003/UDP,443:31002/TCP                                                    4h
+service/kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP                                                                                    5h
+service/scm          NodePort    10.110.34.79   <none>        443:32001/TCP,3900:32002/TCP,3901:32003/TCP,3902:32004/TCP,3903:32005/TCP,3904:32006/TCP   4h
+
+NAME                        READY     STATUS    RESTARTS   AGE
+pod/core-56c4f89dd6-n2ppk   2/2       Running   0          4h
+pod/scm-787df67667-qrnwx    1/1       Running   0          4h
+
+NAME                         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deployment.extensions/core   1         1         1            1           4h
+deployment.extensions/scm    1         1         1            1           4h
+
+```
+
