@@ -1,0 +1,154 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: scm
+  labels:
+    app: scm
+spec:
+  type: NodePort
+  ports:
+  - name: "port443"
+    port: 443
+    nodePort: 32001
+    targetPort: 443
+    protocol: TCP
+  - name: "port3900"
+    port: 3900
+    nodePort: 32002
+    targetPort: 3900
+    protocol: TCP
+  - name: "port3901"
+    port: 3901
+    nodePort: 32003
+    targetPort: 3901
+    protocol: TCP
+  - name: "port3902"
+    port: 3902
+    nodePort: 32004
+    targetPort: 3902
+    protocol: TCP
+  - name: "port3903"
+    port: 3903
+    nodePort: 32005
+    targetPort: 3903
+    protocol: TCP
+  - name: "port3904"
+    port: 3904
+    nodePort: 32006
+    targetPort: 3904
+    protocol: TCP
+  clusterIP: 10.110.34.79
+  selector:
+    app: scm
+---
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scm
+  template:
+    metadata:
+      labels:
+        app: scm
+    spec:
+      hostAliases:
+      - ip: "10.97.212.21"
+        hostnames:
+        - "core.ocedo.cc"
+      - ip: "10.97.212.21"
+        hostnames:
+        - "core-dns.cc"
+      - ip: "10.97.212.21"
+        hostnames:
+        - "core.riverbed.cc"
+      - ip: "10.97.212.21"
+        hostnames:
+        - "core-dns"
+      containers:
+      - name: scm
+        image: quay.io/ocedo/cc:release_2.10.0
+        env:
+        - name: RESTORE_ON_START
+          value: "0"
+        command: ['/sbin/my_init']
+        ports:
+        - name: port443
+          containerPort: 443
+          protocol: TCP
+        - name: port3900
+          containerPort: 3900
+          protocol: TCP
+        - name: port3901
+          containerPort: 3901
+          protocol: TCP
+        - name: port3902
+          containerPort: 3902
+          protocol: TCP
+        - name: port3903
+          containerPort: 3903
+          protocol: TCP
+        - name: port3904
+          containerPort: 3904
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /opt/ocedo/storage
+          name: store
+        - mountPath: /opt/ocedo/etc/cc.config
+          name: cfg
+        - mountPath: /opt/ocedo/etc/core-ca.pem
+          name: key1
+        - mountPath: /opt/ocedo/etc/CC5D9DD88A356829-cert.pem
+          name: key2
+        - mountPath: /opt/ocedo/etc/CC5D9DD88A356829-key.pem
+          name: key3
+        - mountPath: /opt/ocedo/etc/gui-chain.pem
+          name: guichain
+        - mountPath: /opt/ocedo/etc/gui-key.pem
+          name: guikey
+        - mountPath: /opt/ocedo/etc/gui-cert.pem
+          name: guicert
+        - mountPath: /opt/ocedo/etc/.core-restored
+          name: restore
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: 1Gi
+          requests:
+            cpu: "0.5"
+            memory: 1Gi
+      volumes:
+      - name: store
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-storage"
+      - name: cfg
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-files/cc.config"
+      - name: key1
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-files/core-ca.pem"
+      - name: key2
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-files/CC5D9DD88A356829-cert.pem"
+      - name: key3
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-files/CC5D9DD88A356829-key.pem"
+      - name: guichain
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-files/gui-chain.pem"
+      - name: guikey
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-files/gui-key.pem"
+      - name: guicert
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-files/gui-cert.pem"
+      - name: restore
+        hostPath:
+          path: "/home/yogi/sdp-data/scm-files/dummy"

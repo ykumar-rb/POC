@@ -1,0 +1,6 @@
+{
+   "_id": "realm",
+   "admins": ["admin-admin-defaultsuperadmin"],
+   "otype": "realm",
+   "maint_window_time": "04:00"
+}

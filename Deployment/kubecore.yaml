@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: core
+  labels:
+    app: core
+spec:
+  type: NodePort
+  ports:
+  - name: "port53"
+    port: 53
+    nodePort: 31001
+    targetPort: 53
+    protocol: TCP
+  - name: "portudp53"
+    port: 53
+    nodePort: 31003
+    targetPort: 53
+    protocol: UDP
+  - name: "443"
+    port: 443
+    nodePort: 31002
+    targetPort: 443
+  clusterIP: 10.97.212.21
+  selector:
+    app: core
+status:
+  loadBalancer: {}
+
+  
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: core
+  template:
+    metadata:
+      labels:
+        app: core
+    spec:
+      hostAliases:
+      - ip: "10.110.34.79"
+        hostnames:
+        - "dev-scm-test"
+      containers:
+      - image: quay.io/ocedo/core:develop_old
+        name: core
+        ports:
+        - containerPort: 443
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: sql
+        - mountPath: /opt/ocedo/pki
+          name: pki
+      - image: ocedo/ta-dns:886566a
+        name: dns
+        ports:
+        - containerPort: 54
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/unbound/unbound.conf.d/ocedo.conf
+          name: conf
+        resources:
+          limits:
+            cpu: "0.25"
+            memory: 0.5Gi
+          requests:
+            cpu: "0.25"
+            memory: 0.5Gi
+
+      restartPolicy: Always
+      volumes:
+      - name: pki
+        hostPath:
+          path: "/home/yogi/sdp-data/docker-volumes/core-pki-ubuntu"
+      - name: conf
+        hostPath:
+          path: "/home/yogi/git-root/test-steeloc-qa/docker/compose/core-dns/dns/etc/unbound/unbound.conf.d/ocedo.conf"
+      - name: sql
+        hostPath:
+          path: "/home/yogi/sdp-data/docker-volumes/core-mysql-ubuntu"

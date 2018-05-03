@@ -1,0 +1,10 @@
+{
+   "_id": "admin-admin-defaultsuperadmin",
+   "super": 1,
+   "name": "admin",
+   "pwdhash": "894adb46575d10fa94b9ef9635f526ba4379aa4cb9832a3a4d19d95193b8a96cfcab10f95873ba",
+   "email": "admin@riverbed.cc",
+   "longname": "Realm Admin",
+   "otype": "admin",
+	 "realm": "realm"
+}
