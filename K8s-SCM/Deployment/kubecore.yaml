@@ -79,10 +79,10 @@ spec:
       volumes:
       - name: pki
         hostPath:
-          path: "/home/yogi/sdp-data/docker-volumes/core-pki-ubuntu"
+          path: "/root/docker-volumes/core-pki-ubuntu"
       - name: conf
         hostPath:
-          path: "/home/yogi/git-root/test-steeloc-qa/docker/compose/core-dns/dns/etc/unbound/unbound.conf.d/ocedo.conf"
+          path: "/root/ocedo.conf"
       - name: sql
         hostPath:
-          path: "/home/yogi/sdp-data/docker-volumes/core-mysql-ubuntu"
+          path: "/root/docker-volumes/core-mysql-ubuntu"

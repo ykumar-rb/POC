@@ -127,28 +127,28 @@ spec:
       volumes:
       - name: store
         hostPath:
-          path: "/home/yogi/sdp-data/scm-storage"
+          path: "/root/scm-storage"
       - name: cfg
         hostPath:
-          path: "/home/yogi/sdp-data/scm-files/cc.config"
+          path: "/root/scm-files/cc.config"
       - name: key1
         hostPath:
-          path: "/home/yogi/sdp-data/scm-files/core-ca.pem"
+          path: "/root/scm-files/core-ca.pem"
       - name: key2
         hostPath:
-          path: "/home/yogi/sdp-data/scm-files/CC5D9DD88A356829-cert.pem"
+          path: "/root/scm-files/CC5D9DD88A356829-cert.pem"
       - name: key3
         hostPath:
-          path: "/home/yogi/sdp-data/scm-files/CC5D9DD88A356829-key.pem"
+          path: "/root/scm-files/CC5D9DD88A356829-key.pem"
       - name: guichain
         hostPath:
-          path: "/home/yogi/sdp-data/scm-files/gui-chain.pem"
+          path: "/root/scm-files/gui-chain.pem"
       - name: guikey
         hostPath:
-          path: "/home/yogi/sdp-data/scm-files/gui-key.pem"
+          path: "/root/scm-files/gui-key.pem"
       - name: guicert
         hostPath:
-          path: "/home/yogi/sdp-data/scm-files/gui-cert.pem"
+          path: "/root/scm-files/gui-cert.pem"
       - name: restore
         hostPath:
-          path: "/home/yogi/sdp-data/scm-files/dummy"
+          path: "/root/scm-files/dummy"
