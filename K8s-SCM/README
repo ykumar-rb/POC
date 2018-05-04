@@ -1,3 +1,8 @@
+#Description
+
+This POC has objective to deploy on-prem scm and core as dockers on K8s platform.
+We have acheieved creation of two pods "scm" and "core"(having two containers core and dns) on k8s platform.
+Both application hosted as pods are interacting each other using cluster IP.
 
 #Pre-requisites
 ```
@@ -54,30 +59,84 @@ yug       Ready     master    5h        v1.10.1
 When both nodes are ready. Create deployement.
 
 ```
-copy Config folder contents into "/home/yogi/sdp-data/"
+At Master Node:
+Copy Deployment folder into "/root"
 
-sudo chown -R 107:112 /home/yogi/sdp-data/scm-files/*
-sudo chown -R 107:112 /home/yogi/sdp-data/scm-storage
-sudo chmod -R 777  /home/yogi/sdp-data/core-mysql-ubuntu/
-sudo chmod -R 777  /home/yogi/sdp-data/docker-volumes/core-mysql-ubuntu/
-sudo chmod -R 777  /home/yogi/sdp-data/docker-volumes/core-pki-ubuntu/
+At Worker Node:
+   Copy Contents of Config folder into "/root/" 
+   sudo chown -R 107:112 /root/scm-files/*
+   sudo chown -R 107:112 /root/scm-storage
+   sudo chmod -R 777  /root/core-mysql-ubuntu/
+   sudo chmod -R 777  /root/docker-volumes/core-mysql-ubuntu/
+   sudo chmod -R 777  /root/docker-volumes/core-pki-ubuntu/
 
-root@yug:/home/yogi/Deployments# kubectl create -f kubecore.yaml
-root@yug:/home/yogi/Deployments# kubectl create -f kubescm.yaml
+At Master Node:
+   root@yug:/root/Deployments# kubectl create -f kubecore.yaml
+   root@yug:/root/Deployments# kubectl create -f kubescm.yaml
 
-root@yug:/home/yogi/Deployments# kubectl get svc,pods,deployments
-NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                                    AGE
-service/core         NodePort    10.97.212.21   <none>        53:31001/TCP,53:31003/UDP,443:31002/TCP                                                    4h
-service/kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP                                                                                    5h
-service/scm          NodePort    10.110.34.79   <none>        443:32001/TCP,3900:32002/TCP,3901:32003/TCP,3902:32004/TCP,3903:32005/TCP,3904:32006/TCP   4h
+   root@yug:/home/yogi/Deployments# kubectl get svc,pods,deployments
+   NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                                    AGE
+   service/core         NodePort    10.97.212.21   <none>        53:31001/TCP,53:31003/UDP,443:31002/TCP                                                    4h
+   service/kubernetes   ClusterIP   10.96.0.1      <none>        443/TCP                                                                                    5h
+   service/scm          NodePort    10.110.34.79   <none>        443:32001/TCP,3900:32002/TCP,3901:32003/TCP,3902:32004/TCP,3903:32005/TCP,3904:32006/TCP   4h
 
-NAME                        READY     STATUS    RESTARTS   AGE
-pod/core-56c4f89dd6-n2ppk   2/2       Running   0          4h
-pod/scm-787df67667-qrnwx    1/1       Running   0          4h
+   NAME                        READY     STATUS    RESTARTS   AGE
+   pod/core-56c4f89dd6-n2ppk   2/2       Running   0          4h
+   pod/scm-787df67667-qrnwx    1/1       Running   0          4h
 
-NAME                         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-deployment.extensions/core   1         1         1            1           4h
-deployment.extensions/scm    1         1         1            1           4h
-
+   NAME                         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+   deployment.extensions/core   1         1         1            1           4h
+   deployment.extensions/scm    1         1         1            1           4h
 ```
 
+To see logs:
+
+root@yug:~# kubectl get pods
+NAME                    READY     STATUS    RESTARTS   AGE
+core-56c4f89dd6-n2ppk   2/2       Running   0          18h
+scm-787df67667-qrnwx    1/1       Running   1          18h
+root@yug:/home/yogi/git-root/test-steeloc-qa/docker/compose/core-dns/dns/etc/unbound/unbound.conf.d# kubectl logs core-56c4f89dd6-n2ppk -c core
+*** Execute my_init start scripts...
+*** Running /etc/my_init.d/start/01_regen_ssh_host_keys.sh...
+No SSH host key available. Generating one...
+Creating SSH2 RSA key; this may take some time ...
+Creating SSH2 DSA key; this may take some time ...
+Creating SSH2 ECDSA key; this may take some time ...
+*** Running /etc/my_init.d/start/90_datadog.sh...
+*** Running /etc/rc.local...
+*** Booting runit daemon...
+*** Runit started as PID 74
+
+How to access UI:
+  Appy Certificates "A_Admin.p12" on System from "Config/docker-volumes/core-pki-ubuntu/certs"
+  Apply another certificate "core-ca.pem" from "Config/scm-files"
+  
+  NODE_IP is IP on machine on which SCM or Core services are running.
+  
+  To check on which Node pod is scheduled.
+  
+     root@yug:~# kubectl get pod
+     NAME                    READY     STATUS    RESTARTS   AGE
+     core-56c4f89dd6-n2ppk   2/2       Running   0          18h
+     scm-787df67667-qrnwx    1/1       Running   1          18h
+     root@yug:~# kubectl describe pod core-56c4f89dd6-n2ppk
+     Name:           core-56c4f89dd6-n2ppk
+     Namespace:      default
+     Node:           yogi/192.168.63.140
+     Start Time:     Thu, 03 May 2018 17:50:17 +0530
+     Labels:         app=core
+                     pod-template-hash=1270945882
+     Annotations:    <none>
+     Status:         Running
+     IP:             10.44.0.2
+     Controlled By:  ReplicaSet/core-56c4f89dd6
+
+     -----
+
+  Here NODE_IP is "192.168.63.140"
+
+  Core UI:
+  https://<NODE_IP>:31002/admin#/ccs
+  
+  SCM UI:
+  https://<NODE_IP>:32001/admin/Riverbed
