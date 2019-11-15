@@ -1,4 +1,141 @@
 # POC
 
 
-## This documentation focuses on installation of Chef Infra on Ubuntu boxes.
+##  This documentation focuses on installation of Chef Infra on Ubuntu boxes.
+
+
+Chef Infra contains three components which are:
+1. Chef workstation 
+2. Chef Server
+3. Chef Nodes
+
+
+### Chef Worstation
+
+### Chef Server
+
+### Chef Nodes
+
+
+Setup Chef Workstation
+
+Steps :
+
+1. wget https://packages.chef.io/files/stable/chefdk/4.5.0/ubuntu/16.04/chefdk_4.5.0-1_amd64.deb
+2. sudo dpkg -i chefdk_4.5.0-1_amd64.deb
+root@chefWorkstation:/home/yogi# chef
+Usage:
+    chef -h/--help
+    chef -v/--version
+    chef command [arguments...] [options...]
+
+3. Create Chef repo and sample ruby file for demostartiong chef provisioning
+
+root@chefWorkstation:/home/yogi# mkdir chefRepo
+root@chefWorkstation:/home/yogi# cd chefRepo/
+root@chefWorkstation:/home/yogi/chefRepo# vim hello.rb
+
+hello.rb
+
+file 'motd' do
+   content 'hello world'
+end
+
+4. Apply the written provisioning instructions
+
+root@chefWorkstation:/home/yogi/chefRepo# chef-apply hello.rb
+
+``` 
++---------------------------------------------+
+            Chef License Acceptance
+
+Before you can continue, 2 product licenses
+must be accepted. View the license at
+https://www.chef.io/end-user-license-agreement/
+
+Licenses that need accepting:
+  * Chef Infra Client
+  * Chef InSpec
+
+Do you accept the 2 product licenses (yes/no)?
+
+> yes
+
+Persisting 2 product licenses...
+✔ 2 product licenses persisted.
+
++---------------------------------------------+
+Recipe: (chef-apply cookbook)::(chef-apply recipe)
+  * file[motd] action create
+    - create new file motd
+    - update content in file motd from none to b94d27
+    --- motd    2019-11-13 12:18:19.160789665 +0530
+    +++ ./.chef-motd20191113-1377-t8ggca        2019-11-13 12:18:19.160789665 +0530
+    @@ -1 +1,2 @@
+    +hello world
+root@chefWorkstation:/home/yogi/chefRepo# vim motd
+root@chefWorkstation:/home/yogi/chefRepo# chef-apply hello.rb
+Recipe: (chef-apply cookbook)::(chef-apply recipe)
+  * file[motd] action create
+    - update content in file motd from 5891b5 to b94d27
+    --- motd    2019-11-13 12:19:00.465504448 +0530
+    +++ ./.chef-motd20191113-1453-1e1eane       2019-11-13 12:19:25.044708437 +0530
+    @@ -1,2 +1,2 @@
+    -hello
+    +hello world
+
+```
+
+Note: Even we manually do changes in content in motd and trigering apply again reverts back motd content to previous( desired state)
+
+mkdir cookbooks
+set git configurations
+
+git config --global user.email "yogi@example.com"
+git config --global user.name "yogi"
+
+chef generate cookbook learn_chef_apache2
+cd learn_chef_apache2
+Edit recipes/default.rb
+
+apt_update 'Update the apt canche daily' do
+   frequency 86_400
+    sction :periodic
+end
+
+package 'apache2'
+
+service 'apache2' do
+   supports :status  => true
+    action [:enable, :start]
+end
+
+
+Edit /home/yogi/chefRepo/.chef/knife.rb with chef server values
+
+
+
+
+
+Setup Chef Server:
+
+1. wget https://packages.chef.io/files/stable/chef-server/13.0.17/ubuntu/16.04/chef-server-core_13.0.17-1_amd64.deb
+
+2. sudo dpkg -i chef-server-core_13.0.17-1_amd64.deb
+3. Edit hostname and provide same in DNS. Ensure hostname is FQDN is format like
+    chefServer.example.com
+    
+    The same should be there in /etc/hostname so that hostname is set to same FQDN
+    the FQDN for chef server should be mapped to IP in /etc/hosts of all three machines chef workstation, server and Node.
+4. sudo chef-server-ctl reconfigure
+5.  Create user
+sudo chef-server-ctl user-create USER_NAME FIRST_NAME LAST_NAME EMAIL 'PASSWORD' --filename FILE_NAME
+say sudo chef-server-ctl user-create yogi yogesh kumar yogi@example.com 'yogesh' --filename ~/yogi.pem
+6. Create Organisation in Chef Server
+
+sudo chef-server-ctl org-create short_name 'full_organization_name' --association_user user_name --filename ORGANIZATION-validator.pem
+
+e.g.  sudo chef-server-ctl org-create hpeorg 'Hewlett Packard Enterprise' --association_user yogi --filename ~/hpeorg-validator.pem
+
+Keep other DNS name of Nodes in /etc/hosts
+
