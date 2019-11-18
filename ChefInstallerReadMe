@@ -160,7 +160,7 @@ knife clinet list
 knife cookbook upload learn_chef_apache2
 knife cookbook list
 
-sudo knife bootstrap 10.0.2.5 --sh-user yogi --sh-password 'yogesh' -- sudo --use-sudo-password --node-name Node --run-list 'recipe[learn_chef_apache2]'
+sudo knife bootstrap 10.0.2.5 --ssh-user yogi --ssh-password 'yogesh' --sudo --use-sudo-password --node-name Node --run-list 'recipe[learn_chef_apache2]'
 
 
 After this the recipes will be installed on Chef Node. Verfify instalations there
