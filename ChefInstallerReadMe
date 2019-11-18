@@ -6,8 +6,11 @@
 
 Refrences:
 
+https://docs.chef.io/chefdk_setup.html
 https://docs.chef.io/install_server.html
+https://docs.chef.io/ctl_chef_client.html
 https://www.edureka.co/blog/install-chef/
+
 
 Chef Infra contains three components which are:
 1. Chef workstation 
