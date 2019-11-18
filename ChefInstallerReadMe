@@ -4,6 +4,11 @@
 ##  This documentation focuses on installation of Chef Infra on Ubuntu boxes.
 
 
+Refrences:
+
+https://docs.chef.io/install_server.html
+https://www.edureka.co/blog/install-chef/
+
 Chef Infra contains three components which are:
 1. Chef workstation 
 2. Chef Server
