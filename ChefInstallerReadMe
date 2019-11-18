@@ -12,6 +12,10 @@ https://docs.chef.io/ctl_chef_client.html
 https://www.edureka.co/blog/install-chef/
 
 
+Prequisites:
+
+Three Ubuntu boxes with proxy set and are in time sync.
+
 Chef Infra contains three components which are:
 1. Chef workstation 
 2. Chef Server
