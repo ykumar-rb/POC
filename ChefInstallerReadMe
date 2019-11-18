@@ -23,10 +23,14 @@ Chef Infra contains three components which are:
 
 
 ### Chef Worstation
+This is local repo machine where knife tools /chef DK is installed to create cookbooks/recipes
+and interacts with chef server for any provisioning on nodes.
 
 ### Chef Server
+Chef server where recipes and cooksbooks are uploaded which installs chef clients on chef nodes and run recipes on nodes.
 
 ### Chef Nodes
+Chef Node is servers managed by chef server and it is target for provisiong to be done.
 
 
 Setup Chef Workstation
@@ -186,6 +190,6 @@ sudo chef-manage-ctl reconfigure
 
 Portall will be accessible whatever was configured earlier:  https://chefserver.example.com/organisations/
 
-Reference for same avaialable at : https://docs.chef.io/manage.html
+Reference for same available at : https://docs.chef.io/manage.html
 
 
