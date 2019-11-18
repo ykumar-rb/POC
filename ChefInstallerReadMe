@@ -176,3 +176,16 @@ sudo knife bootstrap 10.0.2.5 --ssh-user yogi --ssh-password 'yogesh' --sudo --u
 
 
 After this the recipes will be installed on Chef Node. Verfify instalations there
+
+
+Install Chef Server Managemnet Console:
+
+sudo chef-server-ctl install chef-manage
+sudo chef-server-ctl reconfigure
+sudo chef-manage-ctl reconfigure
+
+Portall will be accessible whatever was configured earlier:  https://chefserver.example.com/organisations/
+
+Reference for same avaialable at : https://docs.chef.io/manage.html
+
+
