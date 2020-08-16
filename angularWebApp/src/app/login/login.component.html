@@ -1,22 +1,22 @@
 <style>
      .content {
     display: flex;
-    margin: 82px auto 32px;
+    margin: 40px auto 10px;
     padding: 0 16px;
     max-width: 960px;
     flex-direction: column;
     align-items: center;
   }
 </style>
-<div class="content" role="main">
+<form>
+    <div class="content" role="main">
         <p style="font-size:25px;">Sign In</p>
-        <input type="text" style="width:300px;max-width:300px" placeholder="Email Address or Phone Number" class="inputclass" [(ngModel)]="textbox1"/>
+        <input type="text" style="width:300px;height: 30px;max-width:300px" placeholder="Email Address or Phone Number" class="inputclass" [(ngModel)]="textbox1"/>
         <br>
-        <input type="text" style="width:300px;max-width:300px" placeholder="Password" class="inputclass" [(ngModel)]="textbox2" />
+        <input type="text" style="width:300px;height: 30px;max-width:300px" placeholder="Password" class="inputclass" [(ngModel)]="textbox2" />
         <br>
-        <button style="background-color: blue;color: white;" (click)="clickHandler() " [disabled]="false" >Log In</button>
-        </div>
-        {{textbox1}}
-        {{textbox2}}
+        <button style="background-color: blue;color: white; height: 35px; width: 100px;" (click)="clickHandler() " [disabled]="false" >Log In</button>
+    </div>
+</form>
         
 

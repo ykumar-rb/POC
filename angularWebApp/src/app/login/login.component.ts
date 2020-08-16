@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   textbox2=""
   clickHandler(){
     console.log("Login request submitted")
+    alert("Login successfull");
   }
 
 }
