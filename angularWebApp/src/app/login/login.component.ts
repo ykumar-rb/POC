@@ -11,5 +11,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  textbox1=""
+  textbox2=""
+  clickHandler(){
+    console.log("Login request submitted")
+  }
 
 }

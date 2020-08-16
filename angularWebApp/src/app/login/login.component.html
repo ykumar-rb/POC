@@ -8,4 +8,15 @@
     align-items: center;
   }
 </style>
-<p class="content" role="main">login works!</p>
+<div class="content" role="main">
+        <p style="font-size:25px;">Sign In</p>
+        <input type="text" style="width:300px;max-width:300px" placeholder="Email Address or Phone Number" class="inputclass" [(ngModel)]="textbox1"/>
+        <br>
+        <input type="text" style="width:300px;max-width:300px" placeholder="Password" class="inputclass" [(ngModel)]="textbox2" />
+        <br>
+        <button style="background-color: blue;color: white;" (click)="clickHandler() " [disabled]="false" >Log In</button>
+        </div>
+        {{textbox1}}
+        {{textbox2}}
+        
+

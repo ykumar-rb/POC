@@ -8,13 +8,15 @@ import { AboutUsComponent } from './about-us/about-us.component';
 
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { GalleryComponent } from './gallery/gallery.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    GalleryComponent
   ],
   imports: [
     BrowserModule,
