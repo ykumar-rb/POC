@@ -296,29 +296,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: pod-lister
-  
-  
-  
-  Logs:
-  
-  k8suser@kdss-s5lk9-0:~$ kubectl logs -f simple-deployment-9f5578997-4xz6m -n default
-172.29.55.92 - - [11/Feb/2021:09:46:54 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-172.29.55.92 - - [11/Feb/2021:10:05:37 +0000] "GET / HTTP/1.1" 200 576 "-" "curl/7.29.0" "-"
-172.29.55.92 - - [11/Feb/2021:11:38:23 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-^C
-k8suser@kdss-s5lk9-0:~$ kubectl logs -f simple-deployment-9f5578997-55fm2 -n default
-172.29.55.92 - - [11/Feb/2021:09:57:04 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-172.29.55.92 - - [11/Feb/2021:09:57:08 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-172.29.55.92 - - [11/Feb/2021:09:57:44 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-172.29.55.92 - - [11/Feb/2021:10:56:40 +0000] "GET / HTTP/1.1" 200 576 "-" "curl/7.29.0" "-"
-172.29.55.92 - - [11/Feb/2021:12:23:23 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-^C
-k8suser@kdss-s5lk9-0:~$ kubectl logs -f simple-deployment-9f5578997-9rtl2  -n default
-172.29.55.92 - - [11/Feb/2021:07:24:42 +0000] "GET / HTTP/1.1" 200 576 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-172.29.55.92 - - [11/Feb/2021:07:24:42 +0000] "GET /logo.svg HTTP/1.1" 200 4902 "http://172.29.55.240/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-172.29.55.92 - - [11/Feb/2021:07:24:42 +0000] "GET /favicon.ico HTTP/1.1" 404 572 "http://172.29.55.240/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
-2021/02/11 07:24:42 [error] 6#6: *1 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.29.55.92, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "172.29.55.240", referrer: "http://172.29.55.240/"
-172.29.55.92 - - [11/Feb/2021:10:52:03 +0000] "GET / HTTP/1.1" 200 576 "-" "curl/7.29.0" "-"
 subjects:
 - kind: ServiceAccount
   name: speaker
@@ -520,3 +497,24 @@ spec:
   - protocol: TCP
     port: 80
   type: LoadBalancer
+
+  Logs:
+  
+  k8suser@kdss-s5lk9-0:~$ kubectl logs -f simple-deployment-9f5578997-4xz6m -n default
+172.29.55.92 - - [11/Feb/2021:09:46:54 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+172.29.55.92 - - [11/Feb/2021:10:05:37 +0000] "GET / HTTP/1.1" 200 576 "-" "curl/7.29.0" "-"
+172.29.55.92 - - [11/Feb/2021:11:38:23 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+^C
+k8suser@kdss-s5lk9-0:~$ kubectl logs -f simple-deployment-9f5578997-55fm2 -n default
+172.29.55.92 - - [11/Feb/2021:09:57:04 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+172.29.55.92 - - [11/Feb/2021:09:57:08 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+172.29.55.92 - - [11/Feb/2021:09:57:44 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+172.29.55.92 - - [11/Feb/2021:10:56:40 +0000] "GET / HTTP/1.1" 200 576 "-" "curl/7.29.0" "-"
+172.29.55.92 - - [11/Feb/2021:12:23:23 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+^C
+k8suser@kdss-s5lk9-0:~$ kubectl logs -f simple-deployment-9f5578997-9rtl2  -n default
+172.29.55.92 - - [11/Feb/2021:07:24:42 +0000] "GET / HTTP/1.1" 200 576 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+172.29.55.92 - - [11/Feb/2021:07:24:42 +0000] "GET /logo.svg HTTP/1.1" 200 4902 "http://172.29.55.240/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+172.29.55.92 - - [11/Feb/2021:07:24:42 +0000] "GET /favicon.ico HTTP/1.1" 404 572 "http://172.29.55.240/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36" "-"
+2021/02/11 07:24:42 [error] 6#6: *1 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.29.55.92, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "172.29.55.240", referrer: "http://172.29.55.240/"
+172.29.55.92 - - [11/Feb/2021:10:52:03 +0000] "GET / HTTP/1.1" 200 576 "-" "curl/7.29.0" "-"
