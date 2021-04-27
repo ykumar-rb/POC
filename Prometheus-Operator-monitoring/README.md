@@ -1,6 +1,4 @@
 
-
-
 ## Create Kubernetes Operator crd and POD:
 
 kubectl create ns monitoring
