@@ -1,21 +1,31 @@
 
 ## Create Kubernetes Operator crd and POD:
 
-kubectl create ns monitoring
-kubectl  create -f -n monitoring Prometheus-Operator-monitoring/prometheus-operator
+`
+  kubectl create ns monitoring
+`
+
+`
+  kubectl  create -f -n monitoring Prometheus-Operator-monitoring/prometheus-operator
+`
 
 
 
 
 ## Create Kubernetes Instance and Sample service monitors
 
+`
+  kubectl create ns apps
+`
 
-kubectl create ns apps
-kubectl create -f Prometheus-Operator-monitoring/prometheus-cluster-monitoring -n monitoring
+` 
+  kubectl create -f Prometheus-Operator-monitoring/prometheus-cluster-monitoring -n monitoring
+`
 
 # Create Service monitor in app namespace
-kubectl create -f Prometheus-Operator-monitoring/Prometheus-Operator-monitoring/node-exporter-apps
-
+`
+  kubectl create -f Prometheus-Operator-monitoring/Prometheus-Operator-monitoring/node-exporter-apps
+`
 
 
 #Expose Prometheus UI on host machine to view on browser
