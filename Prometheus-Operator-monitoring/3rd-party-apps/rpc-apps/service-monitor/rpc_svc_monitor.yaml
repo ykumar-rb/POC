@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: rpc-app
+  labels:
+    k8s-app: rpc-apps
+spec:
+  selector:
+    matchLabels:
+      app: rpc-app
+  endpoints:
+  - port: web
