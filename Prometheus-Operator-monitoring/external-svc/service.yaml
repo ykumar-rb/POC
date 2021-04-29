@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+ name: custom-external-svc
+ labels:
+    app: custom-external-svc
+spec:
+ type: ClusterIP
+ ports:
+ - name: metrics
+   port: 8185
+   targetPort: 8185

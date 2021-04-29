@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+ name: custom-external-node-exporter-svc
+ labels:
+    app: custom-external-node-exporter-svc
+spec:
+ type: ClusterIP
+ ports:
+ - name: https
+   port: 9105
+   targetPort: 9105
