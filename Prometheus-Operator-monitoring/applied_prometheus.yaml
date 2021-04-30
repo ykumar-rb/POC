@@ -1,0 +1,112 @@
+apiVersion: v1
+items:
+- apiVersion: monitoring.coreos.com/v1
+  kind: Prometheus
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"monitoring.coreos.com/v1","kind":"Prometheus","metadata":{"annotations":{},"labels":{"prometheus":"k8s"},"name":"k8s","namespace":"monitoring"},"spec":{"alerting":{"alertmanagers":[{"name":"alertmanager-main","namespace":"monitoring","port":"web"}]},"externalLabels":{"cluster":"docker-desktop"},"image":"quay.io/prometheus/prometheus:v2.19.2","nodeSelector":{"kubernetes.io/os":"linux"},"podMonitorNamespaceSelector":{},"podMonitorSelector":{},"replicas":1,"resources":{"requests":{"memory":"400Mi"}},"ruleSelector":{"matchLabels":{"prometheus":"k8s","role":"alert-rules"}},"securityContext":{"fsGroup":2000,"runAsNonRoot":true,"runAsUser":1000},"serviceAccountName":"prometheus-k8s","serviceMonitorSelector":{"matchExpressions":[{"key":"k8s-app","operator":"In","values":["node-exporter","kube-state-metrics","apiserver","kubelet","apps"]}]},"version":"v2.19.2"}}
+    creationTimestamp: "2021-04-26T07:17:37Z"
+    generation: 5
+    labels:
+      prometheus: k8s
+    managedFields:
+    - apiVersion: monitoring.coreos.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:labels:
+            .: {}
+            f:prometheus: {}
+        f:spec:
+          .: {}
+          f:alerting:
+            .: {}
+            f:alertmanagers: {}
+          f:externalLabels:
+            .: {}
+            f:cluster: {}
+          f:image: {}
+          f:nodeSelector:
+            .: {}
+            f:kubernetes.io/os: {}
+          f:podMonitorNamespaceSelector: {}
+          f:podMonitorSelector: {}
+          f:replicas: {}
+          f:resources:
+            .: {}
+            f:requests:
+              .: {}
+              f:memory: {}
+          f:ruleSelector:
+            .: {}
+            f:matchLabels:
+              .: {}
+              f:prometheus: {}
+              f:role: {}
+          f:securityContext:
+            .: {}
+            f:fsGroup: {}
+            f:runAsNonRoot: {}
+            f:runAsUser: {}
+          f:serviceAccountName: {}
+          f:serviceMonitorNamespaceSelector: {}
+          f:serviceMonitorSelector:
+            .: {}
+            f:matchExpressions: {}
+          f:version: {}
+      manager: kubectl
+      operation: Update
+      time: "2021-04-29T08:56:26Z"
+    name: k8s
+    namespace: monitoring
+    resourceVersion: "3853717"
+    selfLink: /apis/monitoring.coreos.com/v1/namespaces/monitoring/prometheuses/k8s
+    uid: d0357e57-1639-4479-8a74-d20890e5ed51
+  spec:
+    alerting:
+      alertmanagers:
+      - name: alertmanager-main
+        namespace: monitoring
+        port: web
+    externalLabels:
+      cluster: docker-desktop
+    image: quay.io/prometheus/prometheus:v2.19.2
+    nodeSelector:
+      kubernetes.io/os: linux
+    podMonitorNamespaceSelector: {}
+    podMonitorSelector: {}
+    replicas: 1
+    resources:
+      requests:
+        memory: 400Mi
+    ruleSelector:
+      matchLabels:
+        prometheus: k8s
+        role: alert-rules
+    securityContext:
+      fsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
+    serviceAccountName: prometheus-k8s
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector:
+      matchExpressions:
+      - key: k8s-app
+        operator: In
+        values:
+        - node-exporter
+        - kube-state-metrics
+        - apiserver
+        - kubelet
+        - apps
+        - rpc-apps
+        - custom-external-apps
+    version: v2.19.2
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

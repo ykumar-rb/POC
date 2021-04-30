@@ -43,4 +43,7 @@ spec:
       - apiserver
       - kubelet
       - apps
+      - rpc-apps
+      - custom-external-apps
+
   
