@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+ name: custom-external-rpc-svc
+ labels:
+    app: custom-external-rpc-svc
+spec:
+ type: ClusterIP
+ ports:
+ - name: metrics
+   port: 9106
+   targetPort: 8081
