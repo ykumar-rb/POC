@@ -32,3 +32,11 @@
 `
   kubectl -n monitoring  port-forward --address 172.29.55.252 prometheus-k8s-0 9090
 `
+
+# Create Grafana in monitoring  namespace
+`
+  kubectl create -f Prometheus-Operator-monitoring/grafana -n monitoring
+`
+# Expose Grafana UI on host machine to view on browser
+`
+  kubectl -n monitoring  port-forward --address 172.29.55.252 <grafana-pod-id> 3000
