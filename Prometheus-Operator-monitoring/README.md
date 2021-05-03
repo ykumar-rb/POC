@@ -41,3 +41,4 @@
 `
   kubectl -n monitoring  port-forward --address 172.29.55.252 <grafana-pod-id> 3000
 `
+Grafana UI creds are admin/admin
