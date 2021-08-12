@@ -31,8 +31,6 @@ spec:
           mountPath: /app
         command: [ /bin/sh , -c , "apk add --no-cache curl && chmod +x /app/app.sh && ./app/app.sh"]
       - name: fluentd
-        #image: amaas-eos-mw1.cec.lab.emc.com:5047/fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.1
-        #image:  fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.1
         image:  fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch
         env:
                 #- name:  FLUENT_ELASTICSEARCH_HOST
@@ -74,4 +72,4 @@ spec:
           name: fluentd-config
       - name: filescript
         hostPath:
-          path: /root/POC/spike/fluentd/file
+          path: ./file
