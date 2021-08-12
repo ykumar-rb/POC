@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+  namespace: kube-logging
+data:
+  fluent.conf: |
+    <source>
+      @type tail
+      format json
+      read_from_head true
+      tag file-myapp.log
+      path /app/example-log.log
+      pos_file /tmp/example-log.log.pos
+    </source>
+
+    <filter file-myapp.log>
+      @type record_transformer
+      <record>
+         message fluent-poc, ${record["message"]}
+         host_param "#{Socket.gethostname}"
+         service_name ${tag_parts[1]}
+      </record>
+    </filter>
+
+    <match file-myapp.log>
+       @type elasticsearch
+       host elasticsearch.kube-logging.svc.cluster.local
+       port 9200
+       index_name fluentd-poc
+       type_name fluentd
+    </match>

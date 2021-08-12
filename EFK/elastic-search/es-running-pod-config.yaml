@@ -1,0 +1,163 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2021-08-06T20:48:36Z"
+  generateName: es-cluster-
+  labels:
+    app: elasticsearch
+    controller-revision-hash: es-cluster-6fc9f7c6f5
+    statefulset.kubernetes.io/pod-name: es-cluster-2
+  name: es-cluster-2
+  namespace: kube-logging
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: StatefulSet
+    name: es-cluster
+    uid: 6f35a085-144e-4599-aee2-c501591dfed1
+  resourceVersion: "4178227"
+  uid: a8cdf30e-aa81-4a45-bc19-aea9d4f39483
+spec:
+  containers:
+  - env:
+    - name: cluster.name
+      value: k8s-logs
+    - name: node.name
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.name
+    - name: discovery.seed_hosts
+      value: es-cluster-0.elasticsearch,es-cluster-1.elasticsearch,es-cluster-2.elasticsearch
+    - name: cluster.initial_master_nodes
+      value: es-cluster-0,es-cluster-1,es-cluster-2
+    - name: ES_JAVA_OPTS
+      value: -Xms512m -Xmx512m
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    imagePullPolicy: IfNotPresent
+    name: elasticsearch
+    ports:
+    - containerPort: 9200
+      name: rest
+      protocol: TCP
+    - containerPort: 9300
+      name: inter-node
+      protocol: TCP
+    resources:
+      limits:
+        cpu: "1"
+      requests:
+        cpu: 100m
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /usr/share/elasticsearch/data
+      name: pv-data
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-94v5n
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  hostname: es-cluster-2
+  initContainers:
+  - command:
+    - sh
+    - -c
+    - chown -R 1000:1000 /usr/share/elasticsearch/data
+    image: amaas-eos-mw1.cec.lab.emc.com:5047/busybox
+    imagePullPolicy: Always
+    name: fix-permissions
+    resources: {}
+    securityContext:
+      privileged: true
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /usr/share/elasticsearch/data
+      name: pv-data
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-94v5n
+      readOnly: true
+  - command:
+    - sysctl
+    - -w
+    - vm.max_map_count=262144
+    image: amaas-eos-mw1.cec.lab.emc.com:5047/busybox
+    imagePullPolicy: Always
+    name: increase-vm-max-map
+    resources: {}
+    securityContext:
+      privileged: true
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-94v5n
+      readOnly: true
+  - command:
+    - sh
+    - -c
+    - ulimit -n 65536
+    image: amaas-eos-mw1.cec.lab.emc.com:5047/busybox
+    imagePullPolicy: Always
+    name: increase-fd-ulimit
+    resources: {}
+    securityContext:
+      privileged: true
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-94v5n
+      readOnly: true
+  nodeName: mw-rg018
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  subdomain: elasticsearch
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoSchedule
+    key: location
+    operator: Equal
+    value: gc
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: pv-data
+    persistentVolumeClaim:
+      claimName: pv-data-es-cluster-2
+  - name: kube-api-access-94v5n
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+

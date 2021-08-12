@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  namespace: kube-logging
+  labels:
+    app: fluentd
+spec:
+  selector:
+    matchLabels:
+      app: fluentd
+  template:
+    metadata:
+      labels:
+        app: fluentd
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+    spec:
+      serviceAccount: fluentd
+      serviceAccountName: fluentd
+      tolerations:
+      - key: location
+        effect: NoSchedule
+        operator: Equal
+        value: gc
+      containers:
+      - name: file-myapp
+        image: alpine
+        volumeMounts:
+        - name: filescript
+          mountPath: /app
+        command: [ /bin/sh , -c , "apk add --no-cache curl && chmod +x /app/app.sh && ./app/app.sh"]
+      - name: fluentd
+        #image: amaas-eos-mw1.cec.lab.emc.com:5047/fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.1
+        #image:  fluent/fluentd-kubernetes-daemonset:v1.4.2-debian-elasticsearch-1.1
+        image:  fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch
+        env:
+                #- name:  FLUENT_ELASTICSEARCH_HOST
+                #value: "elasticsearch.kube-logging.svc.cluster.local"
+                #- name:  FLUENT_ELASTICSEARCH_PORT
+                # value: "9200"
+            - name: FLUENT_ELASTICSEARCH_SCHEME
+              value: "http"
+            - name: FLUENTD_SYSTEMD_CONF
+              value: "disable"
+            - name: FLUENTD_ARGS
+              value: "--no-supervisor -q"
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        - name: varlogcontainers
+          mountPath: /var/log/containers
+          readOnly: true
+        - name: config
+          mountPath: /fluentd/etc/
+        - name: filescript
+          mountPath: /app
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlogcontainers
+        hostPath:
+          path: /var/log/containers/
+      - name: config
+        configMap:
+          name: fluentd-config
+      - name: filescript
+        hostPath:
+          path: /root/POC/spike/fluentd/file
