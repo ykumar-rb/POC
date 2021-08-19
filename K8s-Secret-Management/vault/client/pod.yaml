@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mw-vault-client
+  namespace: custom-ns
+spec:
+  tolerations:
+  - key: location
+    effect: NoSchedule
+    operator: Equal
+    value: gc
+  containers:
+  - image: nginx:latest
+    name: nginx
+  serviceAccountName: mw-vault-sa
